@@ -16,7 +16,7 @@ Task: Generate the Fibonacci numbers less than 100 and write them to `fibonacci_
 """
 import argparse
 
-def fibonacci_seq(output, max):
+def fibonacci_seq(max):
 	'''Return Fibonacci sequence numbers as a list in an output file'''
 
 	seq = [0, 1]
@@ -25,18 +25,29 @@ def fibonacci_seq(output, max):
 	while (curr < max):
 		seq.append(curr)
 		curr = seq[-1] + seq[-2]
-	
-	outputFile = args.output
-	with open(outputFile, 'w') as file:
-		file.write(str(seq))
 
 	return seq
+
+def write_fibonnaci(output, max):
+	'''Write Fibonacci sequence less than max to an output file'''
+	seq = fibonacci_seq(max) # get sequence
+
+	try:
+		with open(output, 'w') as file: # open sequence to output file
+			file.write(str(seq))
+	except IOError as e:
+		print(f'Unable to write to {output}: {e}')
 
 if __name__ == "__main__":
 
 	parser = argparse.ArgumentParser()
 	parser.add_argument("-o", "--output", type=str, help="Output file name")
-	parser.add_argument("-l", "--limit", type=int, default=100, help="Upper limit of Fibonacci sequence")
+	parser.add_argument("-m", "--max", type=int, default=100, help="Upper limit of Fibonacci sequence")
 	args = parser.parse_args()
 
-	fibonacci_seq(args.output, args.limit)
+	write_fibonnaci(args.output, args.max)
+
+	# To generate the Fibonacci numbers less than 100 and write them to `fibonacci_100.txt`
+	# please enter the following into the command line:
+
+	# python3 ./fibonnaci.py -o fibonacci_100.txt -m 100
